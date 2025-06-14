@@ -164,8 +164,6 @@ private const val BRAKING_THRESHOLD = 5.0f
 private const val HARD_BRAKING_THRESHOLD = 10.0f
 private const val OPTIMAL_ENGINE_TEMP = 90
 
-// Extension functions should be at file level
-
 
 data class VehicleAnalytics(
     val avgSpeed: Double = 0.0,
@@ -207,7 +205,7 @@ data class VehicleEntity(
     val longitude: Double,
     val altitude: Double
 )
-// Enhanced Vehicle State
+
 data class DiagnosticsState(
     val engineHealth: Float = 1.0f,
     val batteryHealth: Float = 1.0f,
@@ -224,9 +222,11 @@ data class DiagnosticAlert(
     val message: String,
     val timestamp: Long = System.currentTimeMillis()
 )
+
 enum class AlertSeverity {
     LOW, MEDIUM, HIGH, CRITICAL
 }
+
 enum class TirePosition {
     FRONT_LEFT, FRONT_RIGHT, REAR_LEFT, REAR_RIGHT
 }
@@ -256,16 +256,12 @@ data class VehicleData(
     constructor() : this(System.currentTimeMillis())
 }
 
-
-
-
 sealed class AnalyticsState {
     data object Loading : AnalyticsState()
     data object Success : AnalyticsState()
     data class Error(val message: String) : AnalyticsState()
 }
 
-// Advanced Analytics Components
 data class MaintenanceRecommendation(
     val severity: MaintenanceSeverity,
     val component: VehicleComponent,
@@ -278,12 +274,10 @@ data class MaintenanceRecommendation(
 enum class MaintenanceSeverity {
     URGENT, HIGH, MEDIUM, LOW, NORMAL
 }
+
 enum class VehicleComponent {
     ENGINE, BATTERY, TIRE_FL, TIRE_FR, TIRE_RL, TIRE_RR, TRANSMISSION, OVERALL, COOLING_SYSTEM, BRAKES, TIRES
 }
-// DiagnosticsManager.kt
-// DiagnosticsManager.kt
-
 
 class DiagnosticsManager(
     private val scope: CoroutineScope,
@@ -487,7 +481,6 @@ class DiagnosticsManager(
     }
 }
 
-// DiagnosticResult.kt
 data class DiagnosticResult(
     val timestamp: Long,
     val engineHealth: Float,
@@ -498,7 +491,6 @@ data class DiagnosticResult(
     val overallHealth: Float
 )
 
-// DiagnosticEvent.kt
 sealed class DiagnosticEvent {
     data class Alert(val alert: DiagnosticAlert) : DiagnosticEvent()
     data class HealthUpdate(val diagnosticResult: DiagnosticResult) : DiagnosticEvent()
@@ -608,9 +600,6 @@ private class VehicleDataGenerator {
     }
 }
 
-
-
-// Stable state holder for physics calculations
 @Stable
 class PhysicsState(
     initialSpeed: Float,
@@ -964,7 +953,6 @@ private fun TrendIndicator(
 
 
 
-
 @Composable
 fun StatusCard(
     title: String,
@@ -1056,7 +1044,6 @@ fun TopBar(
 
 
 
-
 @Composable
 private fun HealthCard(
     title: String,
@@ -1089,12 +1076,15 @@ private fun HealthCard(
         }
     }
 }
+
+
 enum class Screen {
     DASHBOARD,
     ANALYTICS,
     DIAGNOSTICS,
     SETTINGS
 }
+
 
 @Composable
 private fun TimeFrameSelector(
@@ -1114,6 +1104,8 @@ private fun TimeFrameSelector(
         }
     }
 }
+
+
 @Stable
 private object ChartColors {
     val Speed = Color(0xFF00E5FF)
@@ -1124,12 +1116,14 @@ private object ChartColors {
     val RoadCondition = Color(0xFF9C27B0)
 }
 
+
 @Stable
 private data class ChartData(
     val values: List<Float>,
     val maxValue: Float,
     val minValue: Float
 )
+
 
 @Composable
 fun EnhancedAnalyticsChart(
@@ -1234,6 +1228,7 @@ fun EnhancedAnalyticsChart(
     }
 }
 
+
 private fun DrawScope.drawGrid(
     maxValue: Float,
     minValue: Float,
@@ -1278,6 +1273,7 @@ private fun DrawScope.drawGrid(
         )
     }
 }
+
 
 private fun DrawScope.drawAnimatedLine(
     data: List<Float>,
@@ -1364,6 +1360,7 @@ private fun DrawScope.drawAnimatedLine(
     }
 }
 
+
 private fun DrawScope.drawTooltip(
     point: Offset,
     value: Float,
@@ -1409,6 +1406,7 @@ private fun DrawScope.drawTooltip(
     )
 }
 
+
 @Composable
 fun StatusGrid(
     vehicleData: VehicleData,
@@ -1448,6 +1446,7 @@ fun StatusGrid(
     }
 }
 
+
 @Stable
 private data class StatusGridItemData(
     val title: String,
@@ -1455,6 +1454,7 @@ private data class StatusGridItemData(
     val unit: String,
     val icon: ImageVector
 )
+
 
 @Composable
 private fun StatusGridItem(
@@ -1597,6 +1597,7 @@ private fun InfoCard(
         }
     }
 }
+
 @Composable
 fun DashboardScreen(viewModel: VehicleViewModel = viewModel()) {
     var showAnalytics by remember { mutableStateOf(false) }
@@ -1816,6 +1817,8 @@ private fun SettingsCard(
         }
     }
 }
+
+
 @Stable
 private data class SettingsScreenState(
     val vehicleState: VehicleState,
@@ -1850,6 +1853,7 @@ private fun DrivingModeSection(
         }
     }
 }
+
 @Composable
 private fun DisplaySettingsSection(
     settings: DisplaySettings,
@@ -1875,6 +1879,8 @@ private fun DisplaySettingsSection(
         }
     }
 }
+
+
 @Composable
 private fun BrightnessControl(
     brightness: Float,
@@ -1897,6 +1903,7 @@ private fun BrightnessControl(
         )
     }
 }
+
 @Composable
 private fun NightModeToggle(
     nightMode: Boolean,
@@ -2131,6 +2138,7 @@ private fun VehicleState.toVehicleData() = VehicleData(
     roadCondition = roadCondition,
     tireWear = tireWear
 )
+
 object MaintenanceAnalyzer {
     private const val MAX_DISCHARGE_RATE = 5.0
 
@@ -2449,6 +2457,7 @@ private fun generateRecommendation(
         else -> "Maintenance required for ${component.name.lowercase().replace('_', ' ')}"
     }
 }
+
 private fun getHealthColor(health: Float): Color {
     return when {
         health >= 0.8f -> Color(0xFF4CAF50) // Green
@@ -2466,6 +2475,7 @@ private fun getAlertColor(severity: AlertSeverity): Color {
         AlertSeverity.LOW -> Color(0xFF4CAF50) // Green
     }
 }
+
 private fun generateEngineRecommendation(
     severity: MaintenanceSeverity,
     data: List<VehicleData>
@@ -2656,7 +2666,6 @@ private fun collectCoolingSystemDiagnostics(data: List<VehicleData>): Map<String
     )
 }
 
-// Helper functions for diagnostics calculations
 private fun calculateDischargeRate(batteryLevels: List<Int>): Float {
     if (batteryLevels.size < 2) return 0f
     return batteryLevels.zipWithNext { a, b -> (a - b).toFloat() }.average().toFloat()
@@ -2676,6 +2685,7 @@ private fun calculatePressureVariation(data: List<VehicleData>): Map<String, Dou
         "rearRight" to data.map { it.tirePressureRR }.standardDeviation()
     )
 }
+
 private fun formatTimestamp(timestamp: Long): String {
     val formatter = DateTimeFormatter.ofPattern("HH:mm:ss")
     return LocalDateTime.ofInstant(
@@ -2758,6 +2768,7 @@ private fun analyzeBrakingDistribution(brakingForces: List<Float>): Map<String, 
         }
     }.mapValues { it.value.size }
 }
+
 private fun DrawScope.drawGridLines(width: Float, height: Float) {
     val gridColor = Color.White.copy(alpha = 0.1f)
     val verticalLines = 5
@@ -2785,6 +2796,7 @@ private fun DrawScope.drawGridLines(width: Float, height: Float) {
         )
     }
 }
+
 fun VehicleAnalytics.toVehicleStatistics() = VehicleStatistics(
     average = avgEngineTemp.toFloat(),  // Used for ENGINE_TEMP metric
     max = maxSpeed,  // Used for ENGINE_TEMP metric
@@ -2820,6 +2832,7 @@ fun VehicleEntity.toVehicleData() = VehicleData(
     longitude = longitude,
     altitude = altitude
 )
+
 fun VehicleData.toVehicleEntity() = VehicleEntity(
     timestamp = timestamp,
     speed = speed,
@@ -2978,6 +2991,7 @@ object VehiclePhysics {
         }
     }
 }
+
 private fun DrawScope.drawAnimatedLine(
     data: List<Float>,
     maxValue: Float,
@@ -3034,7 +3048,6 @@ private fun DrawScope.drawAnimatedLine(
     }
 }
 
-// New function to calculate efficiency
 fun calculateEfficiency(data: List<VehicleData>): Float {
     if (data.size < 2) return 0f
 
@@ -3046,6 +3059,7 @@ fun calculateEfficiency(data: List<VehicleData>): Float {
 
     return if (batteryUsed > 0) totalDistance / batteryUsed else 0f
 }
+
 data class VehicleStatistics(
     val average: Float,
     val max: Float,
@@ -3059,6 +3073,7 @@ data class VehicleStatistics(
     val averageBatteryDrain: Float,
     val efficiency: Float
 )
+
 enum class VehicleMetric(val displayName: String) {
     SPEED("Speed"),
     RPM("RPM"),
@@ -3068,14 +3083,12 @@ enum class VehicleMetric(val displayName: String) {
     ROAD_CONDITION("Road Condition")
 }
 
-// Create a sealed class for UI state management
 sealed class VehicleUiState {
     data object Loading : VehicleUiState()
     data class Success(val data: VehicleData) : VehicleUiState()
     data class Error(val message: String) : VehicleUiState()
 }
 
-// Create events sealed class for user interactions
 sealed class VehicleEvent {
     data object StartAccelerating : VehicleEvent()
     data object StopAccelerating : VehicleEvent()
@@ -3097,7 +3110,6 @@ class FirebaseVehicleException(
     }
 }
 
-// Main repository class
 class FirebaseVehicleRepository(
     private val firestore: FirebaseFirestore = Firebase.firestore,
     private val dispatcher: kotlinx.coroutines.CoroutineDispatcher = Dispatchers.IO
@@ -3274,21 +3286,16 @@ class FirebaseVehicleRepository(
     }
 }
 
-// Extension function for List<Number>
 fun List<Number>.average(): Double {
     return if (isEmpty()) 0.0 else sumOf { it.toDouble() } / size
 }
 
-
-// Add missing TimeFrame enum
 enum class TimeFrame(val duration: Long, val label: String) {
     LAST_HOUR(3600000, "1H"),
     LAST_DAY(86400000, "24H"),
     LAST_WEEK(604800000, "1W"),
     LAST_MONTH(2592000000, "1M")
 }
-
-// Add missing VehicleData class
 
 data class VehicleState(
     val diagnosticsState: DiagnosticsState = DiagnosticsState(),
@@ -3346,12 +3353,6 @@ data class VehicleState(
     }
 }
 
-
-// Centralized analytics calculation interface
-
-
-// Implementation of analytics calculator
-// Update the interface
 interface AnalyticsCalculator {
     suspend fun calculateEfficiencyScore(data: List<VehicleEntity>, mode: DrivingMode): Float
     suspend fun analyzeMaintenance(
@@ -3360,7 +3361,6 @@ interface AnalyticsCalculator {
     ): MaintenanceRecommendation
 }
 
-// Update the implementation
 class VehicleAnalyticsCalculator : AnalyticsCalculator {
     override suspend fun calculateEfficiencyScore(data: List<VehicleEntity>, mode: DrivingMode): Float {
         return DrivingEfficiencyCalculator.calculate(data, mode)
@@ -3499,7 +3499,7 @@ class VehicleViewModel(
     private val dispatcher: CoroutineDispatcher = Dispatchers.Default
 ) : ViewModel() {
 
-    // State holders with increased buffer capacity
+    // State holders - reduced buffer sizes to prevent memory pressure
     private val _vehicleState = MutableStateFlow(VehicleState())
     val vehicleState = _vehicleState.asStateFlow()
 
@@ -3520,354 +3520,321 @@ class VehicleViewModel(
 
     private val _vehiclePreferences = MutableStateFlow(VehiclePreferences())
 
-    // Performance optimization variables
-    private val physicsCache = LruCache<String, Float>(100)
-    private val lastUpdateTime = AtomicLong(System.nanoTime())
-    private val locationData = AtomicReference<Triple<Double, Double, Double>?>(null)
+    // Optimized caches with smaller sizes
+    private val physicsCache = LruCache<String, PhysicsResult>(50) // Reduced from 100
+    private val engineHealthCache = LruCache<VehicleStateKey, Float>(25) // Reduced from 50
 
-    private val vehicleDataBuffer = Channel<VehicleData>(Channel.BUFFERED) {
-        BufferOverflow.DROP_OLDEST
-    }
-    private val locationBuffer = Channel<Triple<Double, Double, Double>>(Channel.BUFFERED) {
-        BufferOverflow.DROP_OLDEST
-    }
-    private val vehicleDataFlow = MutableSharedFlow<VehicleData>(
-        replay = 0,
-        extraBufferCapacity = 100,
-        onBufferOverflow = BufferOverflow.DROP_OLDEST
-    )
-    private val _locationData = MutableStateFlow<Triple<Double, Double, Double>?>(null)
-
-    // More efficient update rates with separate concerns
-    private val uiUpdateRate = 100L // ms (10fps for UI updates)
-    private val physicsUpdateRate = 33L // ms (30fps for physics)
-    private val diagnosticsUpdateRate = 1000L // ms (1fps for diagnostics)
-
-    // Use atomic references for thread-safe state reading
-    private val lastVehicleUpdate = AtomicLong(0L)
+    // Atomic references for thread-safe access
+    private val lastUpdateTime = AtomicLong(0L)
+    private val lastPhysicsUpdate = AtomicLong(0L)
+    private val lastDiagnosticsUpdate = AtomicLong(0L)
     private val pendingUpdates = AtomicInteger(0)
 
+    // Location data as atomic reference to avoid allocations
+    private val locationData = AtomicReference<LocationTriple?>(null)
 
-    private val updateBatcher = BatchProcessor<VehicleData>(
-        batchSize = 10,
-        maxDelayMs = 100,
+    // Optimized flow with smaller buffer
+    private val vehicleDataFlow = MutableSharedFlow<VehicleData>(
+        replay = 0,
+        extraBufferCapacity = 32, // Reduced from 100
+        onBufferOverflow = BufferOverflow.DROP_OLDEST
+    )
+
+    // Update rates - increased intervals to reduce CPU load
+    private val uiUpdateRate = 67L // ~15fps instead of 10fps for smoother UI
+    private val physicsUpdateRate = 50L // ~20fps instead of 30fps
+    private val diagnosticsUpdateRate = 2000L // 2 seconds instead of 1
+
+    // Batch processing - increased batch size to reduce frequency
+    private val batchProcessor = VehicleDataBatcher(
+        batchSize = 20, // Increased from 10
+        maxDelayMs = 200L, // Increased from 100ms
         scope = viewModelScope,
-        dispatcher = dispatcher,
-        processor = ::processBatchedVehicleData
-    )
+        dispatcher = dispatcher
+    ) { batch ->
+        repository.insertVehicleDataBatch(batch)
+    }
 
+    // Job references for cleanup
+    private var physicsJob: Job? = null
     private var diagnosticsJob: Job? = null
+    private var uiUpdateJob: Job? = null
+    private var dataProcessorJob: Job? = null
 
-    // Update throttling with longer intervals
-    private val updateThrottleTime = 50L // 20fps
+    // Pre-allocated objects to reduce GC pressure
+    private val tempPhysicsResult = PhysicsResult()
+    private val tempDiagnosticAlerts = mutableListOf<DiagnosticAlert>()
 
-    private var lastPhysicsUpdate = 0L
-    private var lastDiagnosticsUpdate = 0L
-
-    // Cache for expensive calculations
-    private val engineHealthCache = ExpiringCache<VehicleState, Float>(
-        maxSize = 50,
-        expirationMs = 1000
-    )
     init {
         initializeVehicleData()
-        startDiagnostics()
-        startPhysicsSimulation()
-        startDataProcessor()
+        startOptimizedUpdateLoop()
     }
-    private fun startDataProcessor() {
+
+    /**
+     * Single optimized update loop instead of multiple coroutines
+     */
+    private fun startOptimizedUpdateLoop() {
+        // Single coroutine handling all updates with different intervals
         viewModelScope.launch(dispatcher) {
-            // Use conflation to only process latest updates
-            vehicleDataFlow
-                // Add buffer but throttle collection
-                .buffer(capacity = Channel.BUFFERED)
-                // Only take the latest item from bursts of updates
-                .conflate()
-                // Batch process for efficiency
-                .collect { data ->
-                    processVehicleData(data)
-                }
-        }
+            var lastUiUpdate = 0L
+            var lastPhysicsUpdateTime = 0L
+            var lastDiagUpdate = 0L
 
-        // Separate UI update flow at controlled rate
-        viewModelScope.launch(dispatcher) {
-            // Use fixed rate timer for UI updates
-            while (isActive) {
-                updateUiState()
-                delay(uiUpdateRate)
-            }
-        }
-    }
-    private val pendingUpdatesList = Collections.synchronizedList(mutableListOf<VehicleData>())
-
-    private fun collectPendingUpdates(): List<VehicleData> {
-        val result = ArrayList(pendingUpdatesList)
-        pendingUpdatesList.clear()
-        return result
-    }
-
-    // Separated UI update mechanism to control recomposition rate
-    private suspend fun updateUiState() {
-        // Only update UI at controlled rate
-        if (System.currentTimeMillis() - lastVehicleUpdate.get() >= uiUpdateRate) {
-            // Emit new state to UI flow
-            _vehicleState.emit(_vehicleState.value)
-            lastVehicleUpdate.set(System.currentTimeMillis())
-        }
-    }
-    private suspend fun processBatchedVehicleData(batch: List<VehicleData>) {
-        withContext(dispatcher) {
-            // Only process if batch is not empty
-            if (batch.isNotEmpty()) {
-                val latestData = batch.last()
-                updateVehicleStateInternal(latestData)
-                repository.insertVehicleDataBatch(batch)
-            }
-        }
-    }
-    private suspend fun processVehicleData(data: VehicleData) {
-        // Update internal model without UI recomposition
-        updateInternalState(data)
-
-        // Track pending updates to avoid lost data
-        pendingUpdates.incrementAndGet()
-
-        // Log data to repository with batching
-        if (pendingUpdates.get() > 10) {
-            repository.insertVehicleDataBatch(collectPendingUpdates())
-            pendingUpdates.set(0)
-        }
-    }
-
-    fun updateVehicleState(data: VehicleData) {
-        viewModelScope.launch(dispatcher) {
-            // Non-blocking emission with overflow handling
-            vehicleDataFlow.tryEmit(data)
-
-            // Only process location when available (avoids allocations)
-            if (data.latitude != null && data.longitude != null && data.altitude != null) {
-                _locationData.value = Triple(data.latitude, data.longitude, data.altitude)
-            }
-        }
-    }
-    private suspend fun updateVehicleStateInternal(data: VehicleData) {
-        val currentTime = System.currentTimeMillis()
-        if (currentTime - lastVehicleUpdate.get() >= 100) {
-            val newState = _vehicleState.value.copy(
-                speed = data.speed,
-                rpm = data.rpm,
-                gear = data.gear.toIntOrNull() ?: 1,
-                range = data.range,
-                batteryCharge = data.batteryLevel.toFloat(),
-                engineTemperature = data.engineTemp.toFloat(),
-                acceleration = data.acceleration,
-                roadCondition = data.roadCondition,
-                tireWear = data.tireWear
-            )
-            _vehicleState.emit(newState)
-            lastVehicleUpdate.set(currentTime)
-        }
-    }
-    private fun updateInternalState(data: VehicleData) {
-        // Get current state once to avoid multiple reads
-        val currentState = _vehicleState.value
-
-        // Create new state with minimal property changes
-        val newState = currentState.copy(
-            speed = data.speed ?: currentState.speed,
-            rpm = data.rpm ?: currentState.rpm,
-            gear = data.gear?.toIntOrNull() ?: currentState.gear,
-            range = data.range ?: currentState.range,
-            batteryCharge = data.batteryLevel?.toFloat() ?: currentState.batteryCharge,
-            engineTemperature = data.engineTemp?.toFloat() ?: currentState.engineTemperature,
-            acceleration = data.acceleration ?: currentState.acceleration,
-            roadCondition = data.roadCondition ?: currentState.roadCondition,
-            tireWear = data.tireWear ?: currentState.tireWear
-        )
-
-        // Update internal state directly without emission
-        _vehicleState.value = newState
-
-        // Add to pending updates for batch repository sync
-        pendingUpdatesList.add(data)
-    }
-
-    private fun startPhysicsSimulation() {
-        viewModelScope.launch(dispatcher) {
-            var previousTime = System.nanoTime()
-
-            while (isActive) {
-                val currentTime = System.nanoTime()
-                val deltaTime = ((currentTime - previousTime) / 1_000_000_000f)
-                    .coerceAtMost(0.1f)
-
-                if (deltaTime >= 0.033f) {
-                    updatePhysics(deltaTime)
-                    syncWithRepository()
-                    previousTime = currentTime
-                }
-
-                delay(16)
-            }
-        }
-    }
-
-    private suspend fun syncWithRepository() = withContext(dispatcher) {
-        val currentState = _vehicleState.value
-        val location = locationData.get()
-
-        val vehicleData = VehicleData(
-            timestamp = System.currentTimeMillis(),
-            speed = currentState.speed,
-            rpm = currentState.rpm,
-            gear = currentState.gear.toString(),
-            range = currentState.range,
-            batteryLevel = currentState.batteryCharge.toInt(),
-            engineTemp = currentState.engineTemperature.toInt(),
-            acceleration = currentState.acceleration,
-            accelerationForce = VehiclePhysics.calculateAcceleration(
-                currentState.speed,
-                currentState.accelerating,
-                currentState.braking,
-                currentState.roadCondition,
-                currentState.tireWear
-            ),
-            roadCondition = currentState.roadCondition,
-            tireWear = currentState.tireWear,
-            latitude = location?.first,
-            longitude = location?.second,
-            altitude = location?.third
-        )
-
-        try {
-            repository.insertVehicleData(vehicleData)
-        } catch (e: Exception) {
-            Log.e("VehicleViewModel", "Error syncing with repository", e)
-        }
-    }
-
-    private suspend fun updatePhysics(deltaTime: Float) {
-        val currentState = _vehicleState.value
-
-        val cacheKey = "${currentState.speed}-${currentState.accelerating}-${currentState.braking}-${currentState.roadCondition}-${currentState.tireWear}"
-        val newAcceleration = physicsCache.get(cacheKey) ?: run {
-            VehiclePhysics.calculateAcceleration(
-                speed = currentState.speed,
-                accelerating = currentState.accelerating,
-                braking = currentState.braking,
-                roadCondition = currentState.roadCondition,
-                tireWear = currentState.tireWear
-            ).also { physicsCache.put(cacheKey, it) }
-        }
-
-        val nextGear = VehiclePhysics.calculateNextGear(
-            currentState.gear,
-            currentState.speed,
-            currentState.rpm
-        )
-
-        val newRpm = VehiclePhysics.calculateRPM(
-            currentState.speed,
-            currentState.gear.toString(),
-            currentState.accelerating
-        )
-
-        val updatedState = currentState.copy(
-            acceleration = newAcceleration,
-            gear = nextGear,
-            rpm = newRpm
-        ).apply { update(deltaTime) }
-
-        _vehicleState.emit(updatedState)
-    }
-
-    private fun startDiagnostics() {
-        diagnosticsJob?.cancel()
-        diagnosticsJob = viewModelScope.launch(dispatcher) {
             while (isActive) {
                 val currentTime = System.currentTimeMillis()
-                if (currentTime - lastDiagnosticsUpdate >= 1000) {
-                    val currentState = _vehicleState.value
-                    runDiagnostics(currentState)
-                    lastDiagnosticsUpdate = currentTime
+
+                // Process incoming vehicle data (highest priority)
+                processLatestVehicleData()
+
+                // Physics update
+                if (currentTime - lastPhysicsUpdateTime >= physicsUpdateRate) {
+                    updatePhysicsOptimized()
+                    lastPhysicsUpdateTime = currentTime
                 }
-                delay(100)
+
+                // UI state update
+                if (currentTime - lastUiUpdate >= uiUpdateRate) {
+                    updateUiStateOptimized()
+                    lastUiUpdate = currentTime
+                }
+
+                // Diagnostics update (lowest frequency)
+                if (currentTime - lastDiagUpdate >= diagnosticsUpdateRate) {
+                    runDiagnosticsOptimized()
+                    lastDiagUpdate = currentTime
+                }
+
+                // Small delay to prevent busy waiting
+                delay(16L) // ~60fps loop
             }
+        }
+
+        // Separate data collection flow
+        dataProcessorJob = viewModelScope.launch(dispatcher) {
+            vehicleDataFlow
+                .conflate() // Only keep latest
+                .collect { data ->
+                    batchProcessor.add(data)
+                }
         }
     }
 
-    private suspend fun runDiagnostics(currentState: VehicleState) {
-        val alerts = mutableListOf<DiagnosticAlert>()
+    /**
+     * Optimized vehicle data processing with minimal allocations
+     */
+    private suspend fun processLatestVehicleData() {
+        // Check if we have pending data without blocking
+        val currentState = _vehicleState.value
+        val hasUpdates = pendingUpdates.get() > 0
+
+        if (hasUpdates && (System.currentTimeMillis() - lastUpdateTime.get()) >= 33L) { // ~30fps max
+            // Process updates in batch to reduce state emissions
+            pendingUpdates.set(0)
+            lastUpdateTime.set(System.currentTimeMillis())
+        }
+    }
+
+    /**
+     * Non-blocking vehicle state update
+     */
+    fun updateVehicleState(data: VehicleData) {
+        // Update internal state immediately (non-blocking)
+        updateInternalStateOptimized(data)
+
+        // Emit to flow for repository batching
+        vehicleDataFlow.tryEmit(data)
+
+        // Update location data if available
+        if (data.latitude != null && data.longitude != null && data.altitude != null) {
+            locationData.set(LocationTriple(data.latitude, data.longitude, data.altitude))
+        }
+    }
+
+    /**
+     * Optimized internal state update with minimal object creation
+     */
+    private fun updateInternalStateOptimized(data: VehicleData) {
+        val current = _vehicleState.value
+
+        // Only create new state if values actually changed
+        val needsUpdate = data.speed != current.speed ||
+                data.rpm != current.rpm ||
+                data.gear?.toIntOrNull() != current.gear ||
+                data.batteryLevel?.toFloat() != current.batteryCharge
+
+        if (needsUpdate) {
+            val newState = current.copy(
+                speed = data.speed ?: current.speed,
+                rpm = data.rpm ?: current.rpm,
+                gear = data.gear?.toIntOrNull() ?: current.gear,
+                range = data.range ?: current.range,
+                batteryCharge = data.batteryLevel?.toFloat() ?: current.batteryCharge,
+                engineTemperature = data.engineTemp?.toFloat() ?: current.engineTemperature,
+                acceleration = data.acceleration ?: current.acceleration,
+                roadCondition = data.roadCondition ?: current.roadCondition,
+                tireWear = data.tireWear ?: current.tireWear
+            )
+
+            _vehicleState.value = newState
+            pendingUpdates.incrementAndGet()
+        }
+    }
+
+    /**
+     * Optimized physics calculation with object reuse
+     */
+    private suspend fun updatePhysicsOptimized() {
+        val currentState = _vehicleState.value
+        val cacheKey = "${currentState.speed.toInt()}-${currentState.accelerating}-${currentState.braking}-${currentState.roadCondition.toInt()}"
+
+        val physicsResult = physicsCache.get(cacheKey) ?: run {
+            // Reuse temp object to avoid allocation
+            tempPhysicsResult.apply {
+                acceleration = VehiclePhysics.calculateAcceleration(
+                    currentState.speed,
+                    currentState.accelerating,
+                    currentState.braking,
+                    currentState.roadCondition,
+                    currentState.tireWear
+                )
+                gear = VehiclePhysics.calculateNextGear(
+                    currentState.gear,
+                    currentState.speed,
+                    currentState.rpm
+                )
+                rpm = VehiclePhysics.calculateRPM(
+                    currentState.speed,
+                    currentState.gear.toString(),
+                    currentState.accelerating
+                )
+            }
+
+            val result = PhysicsResult(
+                tempPhysicsResult.acceleration,
+                tempPhysicsResult.gear,
+                tempPhysicsResult.rpm
+            )
+            physicsCache.put(cacheKey, result)
+            result
+        }
+
+        // Only update if physics values changed significantly
+        if (shouldUpdatePhysics(currentState, physicsResult)) {
+            val updatedState = currentState.copy(
+                acceleration = physicsResult.acceleration,
+                gear = physicsResult.gear,
+                rpm = physicsResult.rpm
+            )
+
+            _vehicleState.value = updatedState
+        }
+    }
+
+    private fun shouldUpdatePhysics(state: VehicleState, physics: PhysicsResult): Boolean {
+        return abs(state.acceleration - physics.acceleration) > 0.1f ||
+                state.gear != physics.gear ||
+                abs(state.rpm - physics.rpm) > 50f
+    }
+
+    /**
+     * Optimized UI state update - only emit when necessary
+     */
+    private suspend fun updateUiStateOptimized() {
+        val currentTime = System.currentTimeMillis()
+        if (currentTime - lastUpdateTime.get() >= uiUpdateRate) {
+            // Trigger recomposition only if there are actual changes
+            if (pendingUpdates.get() > 0) {
+                _vehicleState.emit(_vehicleState.value)
+                pendingUpdates.set(0)
+            }
+            lastUpdateTime.set(currentTime)
+        }
+    }
+
+    /**
+     * Optimized diagnostics with object reuse
+     */
+    private suspend fun runDiagnosticsOptimized() {
+        val currentState = _vehicleState.value
+
+        // Reuse list to avoid allocations
+        tempDiagnosticAlerts.clear()
 
         // Engine temperature check
         if (currentState.engineTemperature > VehicleState.MAX_TEMPERATURE) {
-            alerts.add(DiagnosticAlert(
+            tempDiagnosticAlerts.add(DiagnosticAlert(
                 severity = AlertSeverity.HIGH,
                 component = VehicleComponent.ENGINE,
-                message = "Engine temperature critical: ${currentState.engineTemperature}°C"
+                message = "Engine temperature critical: ${currentState.engineTemperature.toInt()}°C"
             ))
         }
 
-        // Battery charge check
+        // Battery check with early exit
         when {
             currentState.batteryCharge < 10f -> {
-                alerts.add(DiagnosticAlert(
+                tempDiagnosticAlerts.add(DiagnosticAlert(
                     severity = AlertSeverity.CRITICAL,
                     component = VehicleComponent.BATTERY,
-                    message = "Battery critically low: ${currentState.batteryCharge}%"
+                    message = "Battery critically low: ${currentState.batteryCharge.toInt()}%"
                 ))
             }
             currentState.batteryCharge < 20f -> {
-                alerts.add(DiagnosticAlert(
+                tempDiagnosticAlerts.add(DiagnosticAlert(
                     severity = AlertSeverity.HIGH,
                     component = VehicleComponent.BATTERY,
-                    message = "Battery low: ${currentState.batteryCharge}%"
+                    message = "Battery low: ${currentState.batteryCharge.toInt()}%"
                 ))
             }
         }
 
+        // Only update if alerts changed
+        if (tempDiagnosticAlerts != _diagnosticsAlerts.value) {
+            _diagnosticsAlerts.value = tempDiagnosticAlerts.toList()
+        }
+
+        // Update diagnostics state with caching
+        val engineHealth = calculateEngineHealthCached(currentState)
         val diagnosticsState = DiagnosticsState(
-            engineHealth = calculateEngineHealth(currentState),
+            engineHealth = engineHealth,
             batteryHealth = currentState.batteryCharge / 100f,
-            tireHealth = createTireHealthMap(currentState.tireWear),
+            tireHealth = getTireHealthMapCached(currentState.tireWear),
             transmissionHealth = calculateTransmissionHealth(currentState),
-            overallPerformance = calculateOverallPerformance(currentState),
+            overallPerformance = (engineHealth + currentState.batteryCharge/100f + currentState.tireWear) / 3f,
             lastDiagnosticsRun = System.currentTimeMillis(),
-            alerts = alerts
+            alerts = tempDiagnosticAlerts.toList()
         )
 
-        withContext(Dispatchers.Main) {
-            _diagnosticsAlerts.value = alerts
-            _vehicleState.value = currentState.copy(diagnosticsState = diagnosticsState)
-        }
+        _vehicleState.value = currentState.copy(diagnosticsState = diagnosticsState)
     }
 
-    fun updateDrivingMode(mode: DrivingMode) {
-        viewModelScope.launch {
-            _vehicleState.value = _vehicleState.value.copy(drivingMode = mode)
-        }
-    }
+    /**
+     * Cached engine health calculation
+     */
+    private fun calculateEngineHealthCached(state: VehicleState): Float {
+        val key = VehicleStateKey(state.engineTemperature.toInt(), state.rpm.toInt())
 
-    fun updateDisplaySettings(settings: DisplaySettings) {
-        viewModelScope.launch {
-            _displaySettings.value = settings
-        }
-    }
-
-    private fun createTireHealthMap(tireWear: Float) = mapOf(
-        TirePosition.FRONT_LEFT to tireWear,
-        TirePosition.FRONT_RIGHT to tireWear,
-        TirePosition.REAR_LEFT to tireWear,
-        TirePosition.REAR_RIGHT to tireWear
-    )
-
-    private fun calculateEngineHealth(state: VehicleState): Float {
-        return engineHealthCache.get(state) ?: run {
+        return engineHealthCache.get(key) ?: run {
             val tempFactor = 1f - ((state.engineTemperature - VehicleState.MIN_TEMPERATURE) /
-                    (VehicleState.MAX_TEMPERATURE - VehicleState.MIN_TEMPERATURE))
-            val rpmFactor = 1f - (state.rpm / VehiclePhysics.MAX_RPM)
-            ((tempFactor + rpmFactor) / 2f).also { engineHealthCache.put(state, it) }
+                    (VehicleState.MAX_TEMPERATURE - VehicleState.MIN_TEMPERATURE)).coerceIn(0f, 1f)
+            val rpmFactor = 1f - (state.rpm / VehiclePhysics.MAX_RPM).coerceIn(0f, 1f)
+            val health = ((tempFactor + rpmFactor) / 2f).coerceIn(0f, 1f)
+
+            engineHealthCache.put(key, health)
+            health
         }
+    }
+
+    // Cached tire health map to avoid repeated allocations
+    private val cachedTireHealthMap = mutableMapOf<TirePosition, Float>()
+
+    private fun getTireHealthMapCached(tireWear: Float): Map<TirePosition, Float> {
+        cachedTireHealthMap.apply {
+            put(TirePosition.FRONT_LEFT, tireWear)
+            put(TirePosition.FRONT_RIGHT, tireWear)
+            put(TirePosition.REAR_LEFT, tireWear)
+            put(TirePosition.REAR_RIGHT, tireWear)
+        }
+        return cachedTireHealthMap
     }
 
     private fun calculateTransmissionHealth(state: VehicleState): Float {
@@ -3875,163 +3842,145 @@ class VehicleViewModel(
         return if (state.gear == optimalGear) 1.0f else 0.8f
     }
 
-    private fun calculateOverallPerformance(state: VehicleState): Float {
-        return (calculateEngineHealth(state) +
-                (state.batteryCharge / 100f) +
-                state.tireWear +
-                calculateTransmissionHealth(state)) / 4f
+    fun updateDrivingMode(mode: DrivingMode) {
+        viewModelScope.launch(Dispatchers.Main.immediate) {
+            _vehicleState.value = _vehicleState.value.copy(drivingMode = mode)
+        }
     }
 
+    fun updateDisplaySettings(settings: DisplaySettings) {
+        viewModelScope.launch(Dispatchers.Main.immediate) {
+            _displaySettings.value = settings
+        }
+    }
+
+    /**
+     * Optimized initialization with better error handling
+     */
     private fun initializeVehicleData() {
-        viewModelScope.launch {
+        viewModelScope.launch(dispatcher) {
             try {
-                combine(
-                    repository.getVehicleDataStream(TimeFrame.LAST_HOUR.duration)
-                        .map { entities ->
-                            entities.lastOrNull()?.toVehicleData()
-                        },
-                    repository.getVehicleAnalytics(TimeFrame.LAST_HOUR.duration)
-                ) { latestData, analytics ->
-                    Pair(latestData, analytics)
-                }
+                repository.getVehicleDataStream(TimeFrame.LAST_HOUR.duration)
+                    .map { entities -> entities.lastOrNull()?.toVehicleData() }
+                    .combine(repository.getVehicleAnalytics(TimeFrame.LAST_HOUR.duration)) { latest, analytics ->
+                        latest to analytics
+                    }
                     .flowOn(dispatcher)
+                    .catch { e ->
+                        _analyticsState.value = AnalyticsState.Error(e.message ?: "Unknown error")
+                    }
                     .collect { (latest, analytics) ->
-                        // Add null check here
                         if (latest != null) {
-                            _vehicleMetrics.value = VehicleMetrics(
-                                currentData = latest,
-                                analytics = analytics
-                            )
-
-                            _vehicleState.value = _vehicleState.value.copy(
-                                speed = latest.speed ?: 0f,  // Add default values
-                                rpm = latest.rpm ?: 0f,
-                                gear = latest.gear?.toIntOrNull() ?: 1,
-                                acceleration = latest.acceleration ?: 0f,
-                                engineTemperature = latest.engineTemp?.toFloat() ?: 0f,
-                                batteryCharge = latest.batteryLevel?.toFloat() ?: 0f,
-                                tireWear = latest.tireWear ?: 1f,
-                                roadCondition = latest.roadCondition ?: 1f,
-                                range = latest.range ?: 0  // Changed from 0f to 0
-                            )
-
+                            _vehicleMetrics.value = VehicleMetrics(latest, analytics)
+                            updateInternalStateOptimized(latest)
                             _analyticsState.value = AnalyticsState.Success
                         } else {
-                            // Handle case when no data is available
-                            _analyticsState.value = AnalyticsState.Success  // or different state if needed
-                            _vehicleState.value = _vehicleState.value.copy(
-                                // Set default values
-                                speed = 0f,
-                                rpm = 0f,
-                                gear = 1,
-                                acceleration = 0f,
-                                engineTemperature = 0f,
-                                batteryCharge = 100f,
-                                tireWear = 1f,
-                                roadCondition = 1f,
-                                range = 0
-                            )
+                            // Set default state
+                            _vehicleState.value = VehicleState()
+                            _analyticsState.value = AnalyticsState.Success
                         }
                     }
             } catch (e: Exception) {
-                _analyticsState.value = AnalyticsState.Error(e.message ?: "Unknown error")
-                _vehicleState.value = _vehicleState.value.copy(
-                    diagnosticsState = DiagnosticsState(
-                        engineHealth = 0f,
-                        batteryHealth = 0f,
-                        tireHealth = createTireHealthMap(0f),
-                        transmissionHealth = 0f,
-                        overallPerformance = 0f,
-                        lastDiagnosticsRun = System.currentTimeMillis(),
-                        alerts = listOf(DiagnosticAlert(
-                            severity = AlertSeverity.HIGH,
-                            component = VehicleComponent.ENGINE,
-                            message = "Data initialization failed: ${e.message}"
-                        ))
-                    )
-                )
+                _analyticsState.value = AnalyticsState.Error(e.message ?: "Initialization failed")
             }
         }
     }
-    // Resource cleanup
+
     override fun onCleared() {
         super.onCleared()
+
+        // Cancel all jobs
+        physicsJob?.cancel()
         diagnosticsJob?.cancel()
-        engineHealthCache.clear()
+        uiUpdateJob?.cancel()
+        dataProcessorJob?.cancel()
+
+        // Clear caches
         physicsCache.evictAll()
-        updateBatcher.stop()
-        viewModelScope.cancel()
+        engineHealthCache.evictAll()
+        cachedTireHealthMap.clear()
+
+        // Stop batch processor
+        batchProcessor.stop()
     }
 
-    // Inner class for batch processing
-    private class BatchProcessor<T>(
+    // Data classes for reduced allocations
+    private data class PhysicsResult(
+        var acceleration: Float = 0f,
+        var gear: Int = 1,
+        var rpm: Float = 0f
+    )
+
+    private data class VehicleStateKey(
+        val temperature: Int,
+        val rpm: Int
+    )
+
+    private data class LocationTriple(
+        val latitude: Double,
+        val longitude: Double,
+        val altitude: Double
+    )
+
+    /**
+     * Optimized batch processor
+     */
+    private class VehicleDataBatcher(
         private val batchSize: Int,
         private val maxDelayMs: Long,
         private val scope: CoroutineScope,
         private val dispatcher: CoroutineDispatcher,
-        private val processor: suspend (List<T>) -> Unit
+        private val processor: suspend (List<VehicleData>) -> Unit
     ) {
-        private val buffer = mutableListOf<T>()
-        private var lastProcessTime = 0L
-        private var job: Job? = null
+        private val buffer = mutableListOf<VehicleData>()
+        private var lastProcessTime = System.currentTimeMillis()
+        private var processingJob: Job? = null
 
-        fun add(item: T) {
-            scope.launch(dispatcher) {
+        fun add(item: VehicleData) {
+            synchronized(buffer) {
                 buffer.add(item)
-                if (buffer.size >= batchSize ||
-                    (System.currentTimeMillis() - lastProcessTime) >= maxDelayMs) {
-                    processBatch()
+
+                val shouldProcess = buffer.size >= batchSize ||
+                        (System.currentTimeMillis() - lastProcessTime) >= maxDelayMs
+
+                if (shouldProcess && processingJob?.isActive != true) {
+                    processingJob = scope.launch(dispatcher) {
+                        processBatch()
+                    }
                 }
             }
         }
 
         private suspend fun processBatch() {
-            if (buffer.isNotEmpty()) {
-                val batch = buffer.toList()
-                buffer.clear()
-                processor(batch)
-                lastProcessTime = System.currentTimeMillis()
+            val batch = synchronized(buffer) {
+                if (buffer.isNotEmpty()) {
+                    val result = buffer.toList()
+                    buffer.clear()
+                    lastProcessTime = System.currentTimeMillis()
+                    result
+                } else {
+                    emptyList()
+                }
+            }
+
+            if (batch.isNotEmpty()) {
+                try {
+                    processor(batch)
+                } catch (e: Exception) {
+                    Log.e("VehicleViewModel", "Error processing batch", e)
+                }
             }
         }
 
         fun stop() {
-            job?.cancel()
+            processingJob?.cancel()
             scope.launch(dispatcher) {
                 processBatch() // Process remaining items
             }
         }
     }
-
-    // Cache implementation
-    private class ExpiringCache<K, V>(
-        private val maxSize: Int,
-        private val expirationMs: Long
-    ) {
-        private val cache = LruCache<K, Pair<V, Long>>(maxSize)
-
-        fun get(key: K): V? {
-            val value = cache.get(key)
-            return if (value != null && !isExpired(value.second)) {
-                value.first
-            } else {
-                cache.remove(key)
-                null
-            }
-        }
-
-        fun put(key: K, value: V) {
-            cache.put(key, value to System.currentTimeMillis())
-        }
-
-        private fun isExpired(timestamp: Long): Boolean {
-            return System.currentTimeMillis() - timestamp > expirationMs
-        }
-
-        fun clear() {
-            cache.evictAll()
-        }
-    }
 }
+
 data class VehicleMetrics(
     val currentData: VehicleData = VehicleData(),
     val analytics: VehicleAnalytics = VehicleAnalytics()
@@ -4067,6 +4016,7 @@ enum class DrivingMode {
     PERFORMANCE,
     SPORT
 }
+
 private class BatchProcessor<T>(
     private val batchSize: Int,
     private val maxDelayMs: Long,
@@ -4105,6 +4055,7 @@ private class BatchProcessor<T>(
         }
     }
 }
+
 data class UnitSettings(
     val speedUnit: SpeedUnit = SpeedUnit.KPH,
     val temperatureUnit: TemperatureUnit = TemperatureUnit.CELSIUS
