@@ -38,7 +38,7 @@ Utilizes Firebase Firestore for real-time data synchronization and persistence, 
 
 ## 📸 Screenshots & Demo
 
-*It is highly recommended to replace these placeholders with actual screenshots or a GIF of your running application.*
+
 
 | Dashboard | Analytics | Diagnostics |
 |:---:|:---:|:---:|
